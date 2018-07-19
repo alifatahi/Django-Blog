@@ -15,7 +15,7 @@ class PostModelAdmin(admin.ModelAdmin):
     list_filter = ["updated", "timestamp"]
     # Make Our Field Editable in Main Admin Page(It Should Be in List Display)
     list_editable = ["title"]
-    # Make Search and Declare Filed to Search In
+    # Make Search and Declare Field to Search In
     search_fields = ["title", "content"]
 
     # Declare Model
