@@ -1,15 +1,34 @@
-from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
+from django.contrib import messages
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post
+from .forms import PostForm
 
 
-# Create your views here.
 def post_create(request):
-    return HttpResponse("<p>Hello</p>")
+    # Pass request and disable validation on normal
+    form = PostForm(request.POST or None)
+    # if valid
+    if form.is_valid():
+        # save form
+        instance = form.save(commit=False)
+        # save
+        instance.save()
+        # Success Message
+        messages.success(request, "Successfully Create")
+        return HttpResponseRedirect(instance.get_absolute_url())
+    else:
+        # Fail Message
+        messages.error(request, "Not Create Successfully")
+
+    context = {
+        'form': form,
+    }
+    return render(request, "post_form.html", context)
 
 
-def post_detail(request):  # Read
-    instance = get_object_or_404(Post, id=1)
+def post_detail(request, id=None):  # Read
+    instance = get_object_or_404(Post, id=id)
     context = {
         'instance': instance,
         "title": instance.title
@@ -19,14 +38,7 @@ def post_detail(request):  # Read
 
 def post_list(request):  # List Items
     queryset = Post.objects.all()
-    # if request.user.is_authenticated:
-    #     context = {
-    #         "title": "Admin"
-    #     }
-    # else:
-    #     context = {
-    #         "title": "User"
-    #     }
+
     context = {
         'object_list': queryset,
         "title": "User"
@@ -34,9 +46,35 @@ def post_list(request):  # List Items
     return render(request, "index.html", context)
 
 
-def post_update(request):
-    return HttpResponse("<p>Hello</p>")
+def post_update(request, id=None):
+    instance = get_object_or_404(Post, id=id)
+    # Pass request and disable validation on normal
+    # Pass instance to our form so our form has value from that Id
+    form = PostForm(request.POST or None, instance=instance)
+    # if valid
+    if form.is_valid():
+        # save form
+        instance = form.save(commit=False)
+        # save
+        instance.save()
+        # Success Message
+        messages.success(request, "Successfully Update")
+        # Redirect
+        return HttpResponseRedirect(instance.get_absolute_url())
+
+    context = {
+        'instance': instance,
+        "title": instance.title,
+        'form': form
+    }
+    return render(request, "post_form.html", context)
 
 
-def post_delete(request):
-    return HttpResponse("<p>Hello</p>")
+def post_delete(request, id=None):
+    # find
+    instance = get_object_or_404(Post, id=id)
+    # Delete
+    instance.delete()
+    messages.success(request, "Successfully Delete")
+    # Redirect to page
+    return redirect('posts:post_list')

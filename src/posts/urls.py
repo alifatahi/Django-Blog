@@ -7,7 +7,9 @@ from . import views
 urlpatterns = [
     url(r'^$', views.post_list, name='post_list'),
     url(r'^create/$', views.post_create, name='post_create'),
-    url(r'^detail/$', views.post_detail, name='post_detail'),
-    url(r'^update/$', views.post_update, name='post_update'),
-    url(r'^delete/$', views.post_delete, name='post_delete'),
+    # Regular Expression using for our id:
+    # P = parameter , <id> = is identifier , \d + = is means digit and also + number not -
+    url(r'^(?P<id>\d+)/$', views.post_detail, name='post_detail'),
+    url(r'^(?P<id>\d+)/edit/$', views.post_update, name='post_update'),
+    url(r'^(?P<id>\d+)/delete/$', views.post_delete, name='post_delete'),
 ]
