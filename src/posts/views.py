@@ -37,8 +37,9 @@ def post_detail(request, id=None):  # Read
 def post_list(request):  # List Items
     queryset = Post.objects.all()
     paginator = Paginator(queryset, 5)  # Show 25 contacts per page
-
+    # get Page
     page = request.GET.get('page')
+    # Get Value form that Page
     contacts = paginator.get_page(page)
 
     context = {
