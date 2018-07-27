@@ -1,16 +1,55 @@
 {% extends "base.html" %}
 
 {% block content%}
-<h1>{{title}}</h1>
-<p>
-    {% for obj in object_list %}
-    <!--{% url "posts:post_detail" id=obj.id %}-->
-    <a href='{{obj.get_absolute_url}}'>{{obj.title}}</a>
-    <br>
-    {{obj.content}}<br>
-    {{obj.timestamp}}<br>
-    <br>
+<div id="main">
+    <!-- Intro -->
+    <section id="intro">
+        <a href="#" class="logo">
+            <img src="/static/images/logo.jpg" alt=""/>
+        </a>
+        <header>
+            <h2>DjangoBlog</h2>
+            <p>New Post From My Mind</p>
+        </header>
+    </section>
+    {% for obj in contacts %}
+    <!-- Post -->
+    <article class="post">
+        <header>
+            <div class="title">
+                <h2><a href='{{obj.get_absolute_url}}'>{{obj.title}}</a></h2>
+                <!--<p>Lorem ipsum dolor amet nullam consequat etiam feugiat</p>-->
+            </div>
+            <div class="meta">
+                <time class="published">{{obj.timestamp|date:"SHORT_DATE_FORMAT"}}</time>
+                <a href="#" class="author"><span class="name">Jane Doe</span>
+                    <img src="/static/images/avatar.jpg" alt=""/>
+                </a>
+            </div>
+        </header>
+        <a href="single.html" class="image featured"><img src="/static/images/pic01.jpg" alt=""/></a>
+        <p>{{obj.content|linebreaks|truncatechars:120}}</p>
+        <footer>
+            <ul class="actions">
+                <li><a href="{{obj.get_absolute_url}}" class="button large">Continue Reading</a></li>
+            </ul>
+            <ul class="stats">
+                <li><a href="#">General</a></li>
+                <li><a href="#" class="icon fa-heart">28</a></li>
+                <li><a href="#" class="icon fa-comment">128</a></li>
+            </ul>
+        </footer>
+    </article>
     {% endfor %}
-</p>
 
+    <ul class="actions pagination">
+        {% if contacts.has_previous %}
+        <li><a href="?page={{ contacts.previous_page_number }}" class="button large previous">Previous Page</a>
+        </li>
+        {% endif %}
+        {% if contacts.has_next %}
+        <li><a href="?page={{ contacts.next_page_number }}" class="button large next">Next Page</a></li>
+        {% endif %}
+    </ul>
+</div>
 {% endblock content %}

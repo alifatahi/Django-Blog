@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post
@@ -35,10 +36,14 @@ def post_detail(request, id=None):  # Read
 
 def post_list(request):  # List Items
     queryset = Post.objects.all()
+    paginator = Paginator(queryset, 5)  # Show 25 contacts per page
+
+    page = request.GET.get('page')
+    contacts = paginator.get_page(page)
 
     context = {
-        'object_list': queryset,
-        "title": "User"
+        "title": "User",
+        'contacts': contacts
     }
     return render(request, "post_list.html", context)
 

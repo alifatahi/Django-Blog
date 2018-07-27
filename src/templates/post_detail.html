@@ -3,11 +3,32 @@
 {% block head_title %}{{title}} | {{block.super}} {% endblock head_title %}
 
 {% block content %}
-<h1>{{title}}</h1>
-<p>
-
-    {{instance.content}}<br>
-    {{instance.timestamp}}<br>
-
-</p>
+<div id="main">
+    <article class="post">
+        <header>
+            <div class="title">
+                <h2><a href='{{obj.get_absolute_url}}'>{{title}}</a></h2>
+                <!--<p>Lorem ipsum dolor amet nullam consequat etiam feugiat</p>-->
+            </div>
+            <div class="meta">
+                <time class="published">{{instance.timestamp|date:"SHORT_DATE_FORMAT"}}</time>
+                <a href="#" class="author"><span class="name">Jane Doe</span>
+                    <img src="/static/images/avatar.jpg" alt=""/>
+                </a>
+            </div>
+        </header>
+        <a href="single.html" class="image featured"><img src="/static/images/pic01.jpg" alt=""/></a>
+        <p>{{instance.content|linebreaks|linebreaks|truncatechars:120}}</p>
+        <footer>
+            <ul class="actions">
+                <li></li>
+            </ul>
+            <ul class="stats">
+                <li><a href="#">General</a></li>
+                <li><a href="#" class="icon fa-heart">28</a></li>
+                <li><a href="#" class="icon fa-comment">128</a></li>
+            </ul>
+        </footer>
+    </article>
+</div>
 {% endblock content %}
