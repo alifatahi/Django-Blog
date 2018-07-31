@@ -8,7 +8,7 @@ from .forms import PostForm
 
 def post_create(request):
     # Pass request and disable validation on normal
-    form = PostForm(request.POST or None)
+    form = PostForm(request.POST or None, request.FILES or None)
     # if valid
     if form.is_valid():
         # save form
@@ -53,7 +53,7 @@ def post_update(request, id=None):
     instance = get_object_or_404(Post, id=id)
     # Pass request and disable validation on normal
     # Pass instance to our form so our form has value from that Id
-    form = PostForm(request.POST or None, instance=instance)
+    form = PostForm(request.POST or None, request.FILES or None, instance=instance)
     # if valid
     if form.is_valid():
         # save form

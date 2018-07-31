@@ -27,7 +27,11 @@
                 </a>
             </div>
         </header>
-        <a href="single.html" class="image featured"><img src="/static/images/pic01.jpg" alt=""/></a>
+        <a href="single.html" class="image featured">
+            {% if obj.image %}
+            <img height="450" src="{{obj.image.url}}" alt=""/>
+            {% endif %}
+        </a>
         <p>{{obj.content|linebreaks|truncatechars:120}}</p>
         <footer>
             <ul class="actions">
