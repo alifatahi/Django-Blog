@@ -1,13 +1,15 @@
 from urllib.parse import quote_plus
 from django.contrib import messages
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post
 from .forms import PostForm
 
 
 def post_create(request):
+    if not request.user.is_staff or not request.user.is_superuser:
+        raise Http404
     # Pass request and disable validation on normal
     form = PostForm(request.POST or None, request.FILES or None)
     # if valid
@@ -54,6 +56,8 @@ def post_list(request):  # List Items
 
 
 def post_update(request, slug=None):
+    if not request.user.is_staff or not request.user.is_superuser:
+        raise Http404
     instance = get_object_or_404(Post, slug=slug)
     # Pass request and disable validation on normal
     # Pass instance to our form so our form has value from that Id
@@ -78,6 +82,8 @@ def post_update(request, slug=None):
 
 
 def post_delete(request, slug=None):
+    if not request.user.is_staff or not request.user.is_superuser:
+        raise Http404
     # find
     instance = get_object_or_404(Post, slug=slug)
     # Delete
