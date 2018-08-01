@@ -9,7 +9,7 @@ urlpatterns = [
     url(r'^create/$', views.post_create, name='post_create'),
     # Regular Expression using for our id:
     # P = parameter , <id> = is identifier , \d + = is means digit and also + number not -
-    url(r'^(?P<id>\d+)/$', views.post_detail, name='post_detail'),
-    url(r'^(?P<id>\d+)/edit/$', views.post_update, name='post_update'),
-    url(r'^(?P<id>\d+)/delete/$', views.post_delete, name='post_delete'),
+    url(r'^(?P<slug>[\w-]+)/$', views.post_detail, name='post_detail'),
+    url(r'^(?P<slug>[\w-]+)/edit/$', views.post_update, name='post_update'),
+    url(r'^(?P<slug>[\w-]+)/delete/$', views.post_delete, name='post_delete'),
 ]

@@ -1,3 +1,4 @@
+from urllib.parse import quote_plus
 from django.contrib import messages
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import HttpResponse, HttpResponseRedirect
@@ -25,11 +26,14 @@ def post_create(request):
     return render(request, "post_form.html", context)
 
 
-def post_detail(request, id=None):  # Read
-    instance = get_object_or_404(Post, id=id)
+def post_detail(request, slug=None):  # Read
+    instance = get_object_or_404(Post, slug=slug)
+    # encode content for share
+    share_string = quote_plus(instance.content)
     context = {
         'instance': instance,
-        "title": instance.title
+        "title": instance.title,
+        'share_string': share_string,
     }
     return render(request, "post_detail.html", context)
 
@@ -49,8 +53,8 @@ def post_list(request):  # List Items
     return render(request, "post_list.html", context)
 
 
-def post_update(request, id=None):
-    instance = get_object_or_404(Post, id=id)
+def post_update(request, slug=None):
+    instance = get_object_or_404(Post, slug=slug)
     # Pass request and disable validation on normal
     # Pass instance to our form so our form has value from that Id
     form = PostForm(request.POST or None, request.FILES or None, instance=instance)
@@ -73,9 +77,9 @@ def post_update(request, id=None):
     return render(request, "post_form.html", context)
 
 
-def post_delete(request, id=None):
+def post_delete(request, slug=None):
     # find
-    instance = get_object_or_404(Post, id=id)
+    instance = get_object_or_404(Post, slug=slug)
     # Delete
     instance.delete()
     messages.success(request, "Successfully Delete")

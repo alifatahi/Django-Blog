@@ -6,7 +6,7 @@ from django.utils.text import slugify
 
 # upload Location method
 def upload_location(instance, filename):
-    return "%s/%s" % (instance.id, filename)
+    return "%s/%s" % (instance.slug, filename)
 
 
 # Create your models here.
@@ -28,7 +28,7 @@ class Post(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse("posts:post_detail", kwargs={"id": self.id})
+        return reverse("posts:post_detail", kwargs={"slug": self.slug})
 
     class Meta:
         ordering = ["-timestamp", "-updated"]
